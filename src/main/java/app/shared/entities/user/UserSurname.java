@@ -1,4 +1,7 @@
-package app.entities.user;
+package app.shared.entities.user;
 
-public record UserSurname(String surname) {
+import io.micronaut.serde.annotation.Serdeable;
+
+@Serdeable
+public record UserSurname(String value) {
 }

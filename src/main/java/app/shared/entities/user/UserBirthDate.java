@@ -1,6 +1,9 @@
-package app.entities.user;
+package app.shared.entities.user;
+
+import io.micronaut.serde.annotation.Serdeable;
 
 import java.time.LocalDateTime;
 
-public record UserBirthDate(LocalDateTime birthDate) {
+@Serdeable
+public record UserBirthDate(LocalDateTime value) {
 }

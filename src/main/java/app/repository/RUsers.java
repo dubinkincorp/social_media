@@ -6,8 +6,8 @@ import app.shared.entities.user.UserId;
 
 import java.util.Optional;
 
-public interface Users {
-    User register(User user);
-    Optional<User> get(UserId id);
+public interface RUsers {
+    Optional<UserId> create(User user);
+    Optional<User> read(UserId id);
     Optional<Secret> getSecret(UserId id);
 }

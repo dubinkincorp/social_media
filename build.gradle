@@ -1,8 +1,10 @@
 plugins {
     id 'java'
+    id 'io.micronaut.application' version '4.5.3'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-group = 'sabina'
+group = 'app'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -10,8 +12,53 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.postgresql:postgresql:42.7.5'
+
+    /*implementation 'io.micronaut:micronaut-http-server-netty:4.7.23'
+    implementation 'io.micronaut:micronaut-management:4.7.23'
+    implementation 'io.micronaut:micronaut-validation:3.10.4'
+    implementation 'io.micronaut:micronaut-runtime:4.7.23'
+    implementation 'io.micronaut:micronaut-json-core:4.7.23'
+    implementation 'io.micronaut:micronaut-jackson-databind:4.7.23'
+    implementation 'io.micronaut.data:micronaut-data-jdbc:4.7.1'
+    implementation 'io.micronaut.sql:micronaut-jdbc-hikari:6.1.1'
+    implementation 'io.micronaut:micronaut-security-jwt:4.11.3'*/
+
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+    implementation("io.micrometer:context-propagation")
+    implementation("io.micronaut.data:micronaut-data-jdbc")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("io.micronaut.validation:micronaut-validation")
+    implementation("jakarta.validation:jakarta.validation-api")
+    implementation("io.micronaut:micronaut-http-server-netty")
+
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'org.apache.logging.log4j:log4j-api:2.24.3'
+    implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
+    //implementation 'org.apache.logging.log4j:log4j-1.2-api:2.24.3'
+    //implementation 'org.apache.logging.log4j:log4j-jcl:2.24.3'
+    //implementation 'org.apache.logging.log4j:log4j-jul:2.24.3'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.24.3'
+
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+
+    runtimeOnly 'org.yaml:snakeyaml'
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'io.micronaut.test:micronaut-test-junit5:4.7.0'
+}
+
+application {
+    mainClass.set("app.Main")
 }
 
 test {

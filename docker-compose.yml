@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=social_media
+      - POSTGRES_USER=social_media
+      - POSTGRES_PASSWORD=social_media
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U social_media" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  app:
+    image: dubinkincorp/social_media
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    environment:
+      #JDBC_HOST: localhost
+      #JDBC_PORT: 5432
+      JDBC_URL: jdbc:postgresql://db:5432/social_media
+      JDBC_USER: social_media
+      JDBC_PASSWORD: social_media

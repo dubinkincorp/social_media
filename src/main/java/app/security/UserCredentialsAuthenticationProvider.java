@@ -1,7 +1,7 @@
 package app.security;
 
-import app.entities.Secret;
-import app.entities.user.UserId;
+import app.shared.entities.Secret;
+import app.shared.entities.user.UserId;
 import app.repository.db.DbUsers;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
@@ -16,11 +16,11 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 
 @Singleton
-public class AuthenticationProviderUserPassword<B> implements HttpRequestAuthenticationProvider<B> {
+public class UserCredentialsAuthenticationProvider<B> implements HttpRequestAuthenticationProvider<B> {
 
     private final DbUsers dbUsers;
 
-    public AuthenticationProviderUserPassword(DbUsers dbUsers) {
+    public UserCredentialsAuthenticationProvider(DbUsers dbUsers) {
         this.dbUsers = dbUsers;
     }
 

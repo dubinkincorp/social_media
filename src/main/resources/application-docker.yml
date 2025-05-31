@@ -12,7 +12,7 @@ micronaut:
 
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/social_media
+    url: ${JDBC_URL}
     username: social_media
     password: social_media
     driverClassName: org.postgresql.Driver
