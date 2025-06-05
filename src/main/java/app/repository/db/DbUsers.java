@@ -1,6 +1,5 @@
 package app.repository.db;
 
-import app.shared.entities.Login;
 import app.shared.entities.Secret;
 import app.shared.entities.user.*;
 import app.security.Passwords;
@@ -9,6 +8,8 @@ import io.micronaut.transaction.TransactionOperations;
 import jakarta.inject.Singleton;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Singleton
@@ -60,16 +61,7 @@ public class DbUsers implements RUsers {
                 ps.setObject(1, id.id());
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return Optional.of(new User(
-                                new UserId(rs.getObject("id").toString()),
-                                new UserName(rs.getString("name")),
-                                new UserSurname(rs.getString("surname")),
-                                new UserBirthDate(rs.getDate("birth_date").toLocalDate().atStartOfDay()),
-                                new UserGender(rs.getString("gender")),
-                                new UserInterests(rs.getString("interests")),
-                                new UserCity(rs.getString("city")),
-                                null
-                        ));
+                        return Optional.of(fromResultSet(rs));
                     } else {
                         return Optional.empty();
                     }
@@ -95,5 +87,35 @@ public class DbUsers implements RUsers {
                 }
             }
         });
+    }
+
+    @Override
+    public List<User> searchByNameSurnameParts(String namePart, String surnamePart) {
+        return transactionManager.executeRead(status -> {
+            try (PreparedStatement ps = connection.prepareStatement("select * from users where name LIKE ? and surname LIKE ?")) {
+                ps.setString(1, namePart + "%");
+                ps.setString(2, surnamePart + "%");
+                try (ResultSet rs = ps.executeQuery()) {
+                    List<User> result = new ArrayList<>();
+                    while (rs.next()) {
+                        result.add(fromResultSet(rs));
+                    }
+                    return result;
+                }
+            }
+        });
+    }
+
+    private User fromResultSet(ResultSet rs) throws SQLException {
+        return new User(
+                new UserId(rs.getObject("id").toString()),
+                new UserName(rs.getString("name")),
+                new UserSurname(rs.getString("surname")),
+                new UserBirthDate(rs.getDate("birth_date").toLocalDate().atStartOfDay()),
+                new UserGender(rs.getString("gender")),
+                new UserInterests(rs.getString("interests")),
+                new UserCity(rs.getString("city")),
+                null
+        );
     }
 }
